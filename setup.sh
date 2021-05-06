@@ -1,6 +1,5 @@
 # debug
 # set -o xtrace
-sed -i 's/\r$//' setup.sh
 
 KEY_NAME="Noam-Roy-parkingLot-privatekey-`date +'%N'`"
 KEY_PEM="$KEY_NAME.pem"
@@ -94,7 +93,7 @@ ssh -i $KEY_PEM -o "StrictHostKeyChecking=no" -o "ConnectionAttempts=60" ubuntu@
 
     # save DB address
     touch address.txt
-    echo $DB_ID >> address.txt
+    echo $DB_ADDRESS > address.txt
     echo $USERNAME >> address.txt
     echo $PASSWORD >> address.txt
 

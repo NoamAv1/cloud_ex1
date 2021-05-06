@@ -3,7 +3,6 @@ from flask import Flask, request
 from datetime import datetime, timedelta
 import random
 import subprocess
-import os
 
 app = Flask(__name__)
 
@@ -12,12 +11,11 @@ entry_time_remove = b'         entry_time         \n----------------------------
 plate_remove = b' plate \n-------\n '
 parking_lot_remove = b' parkinglot \n------------\n '
 
-# Getting the account details for the DB and deleting it for security measures
+# Getting the account details for the DB
 f = open("/home/ubuntu/address.txt", "r")
 address = f.readline().split('\n')[0]
 username = f.readline().split('\n')[0]
 password = f.readline().split('\n')[0]
-os.remove("/home/ubuntu/address.txt")
 
 def db_call(str):
     connect_to_db = "PGPASSWORD={}  psql -h {} -p 5432 -U {} -c".format(password, address, username)
@@ -28,11 +26,11 @@ def db_call(str):
 
 @app.route('/')
 def home():
-    hello = "Hello and welcome to Roy's and Noam's cloud parking lot! <br/>"
+    hello = "Hello and welcome to Roy's and Noam's cloud parking lot! <br/><br/>"
     entry_str = "To use enter a car to our system please add to the URL \entry?plate=<plate number>&parkingLot=<parking " \
-            "lot number> <br/> And you will get the ticket id <br/>"
+            "lot number> <br/> And you will get the ticket id <br/><br/>"
     exit_str = "To get the price of the car that left please add to the URL \exit?ticketId=<ticket id> <br/> And you " \
-               "will get the pricing for that car <br/> "
+               "will get the pricing for that car"
 
     return hello + entry_str + exit_str
 
