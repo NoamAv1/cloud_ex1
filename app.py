@@ -3,6 +3,7 @@ from flask import Flask, request
 from datetime import datetime, timedelta
 import random
 import subprocess
+import os
 
 app = Flask(__name__)
 
@@ -11,8 +12,15 @@ entry_time_remove = b'         entry_time         \n----------------------------
 plate_remove = b' plate \n-------\n '
 parking_lot_remove = b' parkinglot \n------------\n '
 
+# Getting the account details for the DB and deleting it for security measures
+f = open("/home/ubuntu/address.txt", "r")
+address = f.readline().split('\n')[0]
+username = f.readline().split('\n')[0]
+password = f.readline().split('\n')[0]
+os.remove("/home/ubuntu/address.txt")
+
 def db_call(str):
-    connect_to_db = "PGPASSWORD=12345678  psql -h parkinglot-2.cf9vavhyaofa.eu-central-1.rds.amazonaws.com -p 5432 -U postgres -c"
+    connect_to_db = "PGPASSWORD={}  psql -h {} -p 5432 -U {} -c".format(password, address, username)
     proc = subprocess.Popen(connect_to_db + '"' + str + '"', shell=True, stdout=subprocess.PIPE, )
     output = proc.communicate()[0]
 
